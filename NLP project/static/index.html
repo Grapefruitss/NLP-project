@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>자소서 적합 예측기</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            font-size: 50px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #input-text {
+            width: 70%;
+            height: 500px;
+            font-size: 16px;
+            padding: 10px;
+            border: 3px solid #ccc;
+            border-radius: 8px solid;
+            resize: none;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 20px 40px;
+            font-size: 25px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>자소서 적합 예측기</h1>
+    <textarea id="input-text" rows="20" placeholder="자소서 내용을 입력하세요"></textarea>
+    <button onclick="translateAndPredict()">자소서 제출</button>
+    <div id="result-container" style="display: none;">
+        <h2>예측 결과</h2>
+        <p id="predict-result"></p>
+    </div>
+    <div id="loading-container" style="display: none;">
+        <p>예측 중입니다 잠시만 기다려주세요.</p>
+    </div>
+    <script>
+        function predictAndTranslate() {
+            const inputText = document.getElementById('paragraph-input').value;
+            document.getElementById('result-container').style.display = 'none';
+            document.getElementById('loading-container').style.display = 'block';
+
+            fetch('/predict-and-translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: inputText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('predicted-result').textContent = data.predicted_result;
+                document.getElementById('loading-container').style.display = 'none';
+                document.getElementById('result-container').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('loading-container').style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
