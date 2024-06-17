@@ -36,19 +36,20 @@ with open('model.pkl', 'rb') as f:
 def predict(request: textRequest):
     # 셀레니움을 사용하여 파파고 번역 수행
     translated_paragraph = translate(request.text)
+
+    # 자소서 정규화
     regularized_paragraph = regularize(translated_paragraph)
     
-    # 문서 토큰화
+    # 자소서 토큰화
+    stop_words = set(stopwords.words('english'))
     new_tokens = word_tokenize(regularized_paragraph)
+    filtered_tokens = [word for word in new_tokens if word.isalpha() and word not in stop_words]
 
-    # 새 문서의 벡터 표현 생성
-    new_vector = model.infer_vector(new_tokens)
-
-    # 번역된 결과를 사용하여 모델 입력값 준비
-    model_input = new_vector
+    # 새 자소서의 벡터 표현 생성
+    new_vector = model.infer_vector(filtered_tokens)
 
     # 모델에 입력값 전달하고 결과 예측
-    predicted_result = model.predict(model_input)
+    predicted_result = model.predict(new_vector)
 
     return {'predicted-result': predicted_result}
 
