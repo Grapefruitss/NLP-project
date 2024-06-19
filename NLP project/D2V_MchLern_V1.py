@@ -95,7 +95,7 @@ y_pred = best_rf.predict(X_test_vectors)
 # 성능 평가
 print(classification_report(y_test, y_pred))
 
-###################################################
+################################################### Random Search를 이용하여 하이퍼파라미터를 튜닝
 
 from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import randint
