@@ -21,7 +21,7 @@
             text-align: center;
         }
 
-        #input-text {
+        #paragraph-input {
             width: 70%;
             height: 500px;
             font-size: 16px;
@@ -91,11 +91,11 @@
 </head>
 <body>
     <h1>자소서 적합 예측기</h1>
-    <textarea id="input-text" rows="20" placeholder="자소서 내용을 입력하세요"></textarea>
-    <button onclick="translateAndPredict()">자소서 제출</button>
+    <textarea id="paragraph-input" rows="20" placeholder="자소서 내용을 입력하세요"></textarea>
+    <button onclick="predictAndTranslate()">자소서 제출</button>
     <div id="result-container" style="display: none;">
         <h2>예측 결과</h2>
-        <p id="predict-result"></p>
+        <p id="predicted-result"></p>
     </div>
     <div id="loading-container" style="display: none;">
         <p>예측 중입니다 잠시만 기다려주세요.</p>
@@ -106,7 +106,7 @@
             document.getElementById('result-container').style.display = 'none';
             document.getElementById('loading-container').style.display = 'block';
 
-            fetch('/predict-and-translate', {
+            fetch('/predict', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -115,7 +115,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('predicted-result').textContent = data.predicted_result;
+                document.getElementById('predicted-result').textContent = data.predicted-result;
                 document.getElementById('loading-container').style.display = 'none';
                 document.getElementById('result-container').style.display = 'block';
             })

@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.encoders import jsonable_encoder
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -15,12 +16,13 @@ from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 import time
 import pickle
 import re
+import uvicorn
 
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory='static'), name='static')
 
-templates = Jinja2Templates(directory='templates')
+templates = Jinja2Templates(directory='static')
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
@@ -28,12 +30,6 @@ async def home(request: Request):
 
 class textRequest(BaseModel):
     text: str
-
-with open('d2v_model_1245.pkl', 'rb') as f:
-    d2vmodel = pickle.load(f)
-
-with open('svc_model_1245.pkl', 'rb') as f:
-    clfmodel = pickle.load(f)
 
 @app.post("/predict")
 def predict(request: textRequest):
@@ -48,13 +44,23 @@ def predict(request: textRequest):
     new_tokens = word_tokenize(regularized_paragraph)
     filtered_tokens = [word for word in new_tokens if word.isalpha() and word not in stop_words]
 
+    with open('d2v_model_1245.pkl', 'rb') as f:
+        d2vmodel = pickle.load(f)
+
+    with open('svc_model_1245.pkl', 'rb') as f:
+        clfmodel = pickle.load(f)
+
     # 새 자소서의 벡터 표현 생성
     new_vector = d2vmodel.infer_vector(filtered_tokens)
+    new_vector = new_vector.reshape(1, -1)
 
     # 모델에 입력값 전달하고 결과 예측
     predicted_result = clfmodel.predict(new_vector)
 
-    return {'predicted-result': predicted_result}
+    #{'predicted-result': int(predicted_result[0])}
+    #json_data = jsonable_encoder(data)
+    
+    return {'predicted-result': int(predicted_result[0])}
 
 def translate(text):
     # 크롬 드라이버 설정
@@ -138,3 +144,6 @@ def regularize(text):
     re_text = re.sub(r'[\[\]\(\)\{\}]', '', re_text)     # 괄호 제거
     re_text = re.sub(r'^\s+', '', re_text)               # 공백으로 시작하는 문서들의 공백 제거
     return re_text
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='127.0.0.1', port=8000)
