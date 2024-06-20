@@ -44,7 +44,7 @@
 
         #result-container {
             background-color: #f1f1f1;
-            padding: 20px;
+            padding: 50px;
             border-radius: 5px;
             text-align: center;
         }
@@ -115,7 +115,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('predicted-result').textContent = data.predicted-result;
+                document.getElementById('predicted-result').textContent = data['predicted-result'];
                 document.getElementById('loading-container').style.display = 'none';
                 document.getElementById('result-container').style.display = 'block';
             })
