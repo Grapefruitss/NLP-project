@@ -32,7 +32,7 @@ class textRequest(BaseModel):
     text: str
 
 @app.post("/predict")
-def predict(request: textRequest):
+async def predict(request: textRequest):
     # 셀레니움을 사용하여 파파고 번역 수행
     translated_paragraph = translate(request.text)
 
@@ -57,10 +57,10 @@ def predict(request: textRequest):
     # 모델에 입력값 전달하고 결과 예측
     predicted_result = clfmodel.predict(new_vector)
 
-    #{'predicted-result': int(predicted_result[0])}
-    #json_data = jsonable_encoder(data)
-    
-    return {'predicted-result': int(predicted_result[0])}
+    if predicted_result[0] == 1:
+        return {'predicted-result': '적합'}
+    else:
+        return {'predicted-result': '미흡'}
 
 def translate(text):
     # 크롬 드라이버 설정
