@@ -29,8 +29,11 @@ async def home(request: Request):
 class textRequest(BaseModel):
     text: str
 
-with open('model.pkl', 'rb') as f:
-    model = pickle.load(f)
+with open('d2v_model_1245.pkl', 'rb') as f:
+    d2vmodel = pickle.load(f)
+
+with open('svc_model_1245.pkl', 'rb') as f:
+    clfmodel = pickle.load(f)
 
 @app.post("/predict")
 def predict(request: textRequest):
@@ -46,10 +49,10 @@ def predict(request: textRequest):
     filtered_tokens = [word for word in new_tokens if word.isalpha() and word not in stop_words]
 
     # 새 자소서의 벡터 표현 생성
-    new_vector = model.infer_vector(filtered_tokens)
+    new_vector = d2vmodel.infer_vector(filtered_tokens)
 
     # 모델에 입력값 전달하고 결과 예측
-    predicted_result = model.predict(new_vector)
+    predicted_result = clfmodel.predict(new_vector)
 
     return {'predicted-result': predicted_result}
 
