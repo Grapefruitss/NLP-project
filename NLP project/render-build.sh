@@ -37,10 +37,6 @@ pip install -r requirements.txt --no-cache-dir -q
 echo "Starting application..."
 uvicorn app:app --host 0.0.0.0 --port 8080 &
 
-echo "Configuring firewall to allow port 8080..."
-ufw allow 8080
-ufw status
-
 # 애플리케이션 상태 확인
 echo "Checking application status on port 8080..."
 curl http://127.0.0.1:8080
