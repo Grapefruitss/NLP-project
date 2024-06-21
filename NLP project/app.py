@@ -18,6 +18,8 @@ import re
 import uvicorn
 import asyncio
 import logging
+import nltk
+nltk.download('stopwords')
 
 logger = logging.getLogger("uvicorn.info")
 
