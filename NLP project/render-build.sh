@@ -31,7 +31,7 @@ fi
 # export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
 
 # Update package list to ensure everything is up-to-date
-sudo apt-get update
+apt-get update
 
 # add your own build commands...
 echo "Installing Python dependencies..."
