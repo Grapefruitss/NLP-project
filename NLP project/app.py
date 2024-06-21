@@ -20,6 +20,7 @@ import asyncio
 import logging
 import nltk
 nltk.download('stopwords')
+nltk.download('punkt')
 
 logger = logging.getLogger("uvicorn.info")
 
