@@ -35,7 +35,7 @@ echo "Installing Python dependencies..."
 pip install -r requirements.txt --no-cache-dir -q
 
 echo "Starting application..."
-uvicorn app:app --host 0.0.0.0 --port 8000
+uvicorn app:app --host 0.0.0.0 --port 8080
 
 end_time=$(date +%s)
 elapsed_time=$((end_time - start_time))
