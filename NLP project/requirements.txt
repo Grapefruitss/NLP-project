@@ -5,4 +5,5 @@ gensim
 uvicorn
 selenium
 webdriver-manager
+lightgbm
 scipy==1.10.1
