@@ -12,6 +12,7 @@ if [[ ! -d $STORAGE_DIR/chrome ]]; then
   dpkg -x ./google-chrome-stable_current_amd64.deb $STORAGE_DIR/chrome
   rm ./google-chrome-stable_current_amd64.deb
   cd $HOME/project/src # Make sure we return to where we were
+  pip install -r requirements.txt
 else
   echo "...Using Chrome from cache"
 fi
@@ -20,5 +21,4 @@ fi
 # export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
 
 # add your own build commands...
-pip install -r requirements.txt
 uvicorn app:app --host 0.0.0.0 --port 8000
