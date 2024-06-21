@@ -37,10 +37,6 @@ pip install -r requirements.txt --no-cache-dir -q
 echo "Starting application..."
 uvicorn app:app --host 0.0.0.0 --port 8080 &
 
-# 애플리케이션 상태 확인
-echo "Checking application status on port 8080..."
-curl http://0.0.0.0:8080
-
 end_time=$(date +%s)
 elapsed_time=$((end_time - start_time))
 echo "Build completed in $elapsed_time seconds."
