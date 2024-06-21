@@ -16,8 +16,27 @@ import time
 import pickle
 import re
 import uvicorn
+import asyncio
+import logging
 
-app = FastAPI()
+logger = logging.getLogger("uvicorn.info")
+
+async def startup_event():
+    logger.info("Starting application...")
+
+    # 데이터베이스 연결 설정
+    db_start_time = time.time()
+    await asyncio.sleep(2)  # 예시로 비동기 작업을 대체
+    logger.info(f"Database connection established in {time.time() - db_start_time} seconds")
+
+    # 기타 초기화 작업
+    other_start_time = time.time()
+    await asyncio.sleep(2)  # 예시로 비동기 작업을 대체
+    logger.info(f"Other initialization completed in {time.time() - other_start_time} seconds")
+
+    logger.info("Application startup complete")
+
+app = FastAPI(on_startup=[startup_event])
 
 app.mount("/static", StaticFiles(directory='static'), name='static')
 app.mount("/img", StaticFiles(directory='img'), name="img")
@@ -149,4 +168,4 @@ def regularize(text):
     return re_text
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    uvicorn.run(app, host='0.0.0.0', port=8000, log_level="info")
