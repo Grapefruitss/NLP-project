@@ -21,6 +21,7 @@ import uvicorn
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory='static'), name='static')
+app.mount("/img", StaticFiles(directory='img'), name="img")
 
 templates = Jinja2Templates(directory='static')
 
@@ -33,6 +34,7 @@ class textRequest(BaseModel):
 
 @app.post("/predict")
 async def predict(request: textRequest):
+
     # 셀레니움을 사용하여 파파고 번역 수행
     translated_paragraph = translate(request.text)
 
@@ -44,10 +46,10 @@ async def predict(request: textRequest):
     new_tokens = word_tokenize(regularized_paragraph)
     filtered_tokens = [word for word in new_tokens if word.isalpha() and word not in stop_words]
 
-    with open('d2v_model_1245.pkl', 'rb') as f:
+    with open('./models/d2v_model_lgbm.pkl', 'rb') as f:
         d2vmodel = pickle.load(f)
 
-    with open('svc_model_1245.pkl', 'rb') as f:
+    with open('./models/clf_model_lgbm.pkl', 'rb') as f:
         clfmodel = pickle.load(f)
 
     # 새 자소서의 벡터 표현 생성
@@ -61,14 +63,18 @@ async def predict(request: textRequest):
         return {'predicted-result': '적합'}
     else:
         return {'predicted-result': '미흡'}
+    
 
 def translate(text):
     # 크롬 드라이버 설정
     options = webdriver.ChromeOptions()
+    #options.binary_location = "C:/Program Files/Google/Chrome/Application/chrome.exe"
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    driver_path = r'./chromedriver.exe'
+    driver = webdriver.Chrome(service=Service(driver_path), options=options)
 
     # 파파고 웹사이트 열기
     papago_url = "https://papago.naver.com/"
