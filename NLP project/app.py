@@ -57,10 +57,10 @@ class textRequest(BaseModel):
 async def predict(request: textRequest):
 
     # 셀레니움을 사용하여 파파고 번역 수행
-    translated_paragraph = translate(request.text)
+    translated_paragraph = await translate(request.text)
 
     # 자소서 정규화
-    regularized_paragraph = regularize(translated_paragraph)
+    regularized_paragraph = await regularize(translated_paragraph)
     
     # 자소서 토큰화
     stop_words = set(stopwords.words('english'))
