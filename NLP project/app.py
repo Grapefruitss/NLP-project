@@ -34,6 +34,7 @@ class textRequest(BaseModel):
 
 @app.post("/predict")
 async def predict(request: textRequest):
+
     # 셀레니움을 사용하여 파파고 번역 수행
     translated_paragraph = translate(request.text)
 
@@ -62,11 +63,12 @@ async def predict(request: textRequest):
         return {'predicted-result': '적합'}
     else:
         return {'predicted-result': '미흡'}
+    
 
 def translate(text):
     # 크롬 드라이버 설정
     options = webdriver.ChromeOptions()
-    options.binary_location = "C:/Program Files/Google/Chrome/Application"
+    options.binary_location = "C:/Program Files/Google/Chrome/Application/chrome.exe"
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
