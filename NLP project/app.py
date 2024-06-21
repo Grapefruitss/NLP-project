@@ -73,7 +73,7 @@ def translate(text):
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
 
-    driver_path = "chromedriver.exe"
+    driver_path = "./chromedriver.exe"
     driver = webdriver.Chrome(service=Service(driver_path), options=options)
 
     # 파파고 웹사이트 열기
