@@ -72,7 +72,9 @@ def translate(text):
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    driver_path = "chromedriver.exe"
+    driver = webdriver.Chrome(service=Service(driver_path), options=options)
 
     # 파파고 웹사이트 열기
     papago_url = "https://papago.naver.com/"
