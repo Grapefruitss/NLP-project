@@ -21,6 +21,7 @@ import uvicorn
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory='static'), name='static')
+app.mount("/img", StaticFiles(directory='img'), name="img")
 
 templates = Jinja2Templates(directory='static')
 
@@ -44,10 +45,10 @@ async def predict(request: textRequest):
     new_tokens = word_tokenize(regularized_paragraph)
     filtered_tokens = [word for word in new_tokens if word.isalpha() and word not in stop_words]
 
-    with open('d2v_model_1245.pkl', 'rb') as f:
+    with open('./models/d2v_model_lgbm.pkl', 'rb') as f:
         d2vmodel = pickle.load(f)
 
-    with open('svc_model_1245.pkl', 'rb') as f:
+    with open('./models/clf_model_lgbm.pkl', 'rb') as f:
         clfmodel = pickle.load(f)
 
     # 새 자소서의 벡터 표현 생성

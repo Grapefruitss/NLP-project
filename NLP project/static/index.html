@@ -1,129 +1,132 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>자소서 적합 예측기</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        h1 {
-            font-size: 50px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        #paragraph-input {
-            width: 70%;
-            height: 500px;
-            font-size: 16px;
-            padding: 10px;
-            border: 3px solid #ccc;
-            border-radius: 8px solid;
-            resize: none;
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 20px 40px;
-            font-size: 25px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        #result-container {
-            background-color: #f1f1f1;
-            padding: 50px;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        #result-container h2 {
-            margin-top: 0;
-        }
-
-        #result-container #predict-result {
-            font-size: 40px;
-            font-weight: bold;
-        }
-
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-            }
-
-        #loading-container {
-            background-color: rgba(0, 0, 0, 0.5);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 70%;
-            height: 70%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 40px;
-        }
-
-        #loading-container::before {
-            content: "";
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 5s linear infinite;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자기소개서 합격 예측기</title>
+    <link rel="stylesheet" href="./static/style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h1>자소서 적합 예측기</h1>
-    <textarea id="paragraph-input" rows="20" placeholder="자소서 내용을 입력하세요"></textarea>
-    <button onclick="predictAndTranslate()">자소서 제출</button>
-    <div id="result-container" style="display: none;">
-        <h2>예측 결과</h2>
-        <p id="predicted-result"></p>
+    <div id="wrap">
+        <!-- 처음 화면 -->
+        <section id="info-container">
+            <img src="./img/3d-glassy-dreamy-composition-with-bubbles.png" alt="" class="obj">
+            <div class="inner">
+                <div class="info-txt">
+                    <div class="txt--name"><img src="./img/txt--name.png" alt="AI야, 합격시켜조"></div>
+                    <div class="txt--sub">
+                        자기소개서 보조 프로그램으로 <br>
+                        당신이 원하는 회사에 한걸음 더 나아가세요
+                    </div>
+                    <button type="button" class="btn__start"><span>시작하기</span></button>
+                    <script>
+                        //시작하기 버튼
+                        $('.btn__start').on('click',function(){
+                            $('#info-container').hide();
+                            $('#main-container').show()
+                        })
+                    </script>
+                </div>
+                <img src="./img/3d-casual-life-small-chatbot-with-magnifying-glass.png" alt="아이콘" class="obj obj3">
+            </div>
+            <img src="./img/3d-casual-life-joyful-young-woman-jumping.png" alt="아이콘" class="obj obj1">
+            <img src="./img/3d-business-young-woman-sitting-with-a-laptop-and-waving-her-hand.png" alt="아이콘" class="obj obj2">
+        </section>
+        <!-- 합격 예측기 화면  -->
+        <section id="main-container">
+            <div class="inner">
+                <h1 class="tit"><img src="./img/tit.png" alt="자기소개서 적합 예측기"></h1>
+                <div class="txt__area">
+                    <textarea id="paragraph-input" rows="20" placeholder="자기소개서 내용을 입력하세요." maxlength="9000"></textarea>
+                    <div class="bottom__wrap">
+                        <div class="btn__wrap-left">
+                            <div class="txt-count">
+                                <span class="text">0</span>
+                                <span class="text-total">/ 9000</span>
+                            </div>
+                            <button class="btn__copy" title="복사하기"><i><img src="./img/copy.png" alt="복사하기버튼 아이콘" ></i></button>
+                            <button class="btn__paste" title="붙여넣기"><i><img src="./img/paste.png" alt="복사하기버튼 아이콘"></i></button>
+                        </div>
+                        <div class="btn__wrap-right">
+                            <button onclick="predictAndTranslate()" class="btn__submit">제출하기</button>
+                            <script>
+                                function predictAndTranslate() {
+                                    const inputText = document.getElementById('paragraph-input').value;
+                                    document.getElementById('result-container').style.display = 'none';
+                                    document.getElementById('loading-container').style.display = 'block';
+                        
+                                    fetch('/predict', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ text: inputText })
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        document.getElementById('predicted-result').textContent = data['predicted-result'];
+                                        document.getElementById('loading-container').style.display = 'none';
+                                        document.getElementById('result-container').style.display = 'block';
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        document.getElementById('loading-container').style.display = 'none';
+                                    });
+                                }
+                            </script>
+                        </div>
+                        <script>
+                            //복사하기 버튼
+                            $('.btn__copy').on('click',function(){
+                                let textareaContent = $('#paragraph-input').val();
+                                navigator.clipboard.writeText(textareaContent)
+                                .then(function() {
+                                    alert('텍스트가 복사되었습니다.');
+                                })
+                            })
+                            //붙여넣기 버튼
+                            $('.btn__paste').on('click',function(){
+                                navigator.clipboard.readText()
+                                .then(function(text) {
+                                    $('#paragraph-input').val(text);
+                                })
+                            })
+                            //글자수 체크
+                            $('#paragraph-input').keyup(function (e) {
+                            let content = $(this).val();
+                                if (content.length == 0 || content == '') {
+                                    $('.text').text('0');
+                                } else {
+                                    $('.text').text(content.length);
+                                }
+                                // 글자수 제한
+                                if (content.length > 9000) {
+                                    $(this).val($(this).val().substring(0, 9000));
+                                    alert('최대 9000자까지 입력 가능합니다.');
+                                };
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- 결과창 -->
+        <section id="result-container">
+            <h2>예측 결과</h2>
+            <p id="predicted-result"></p>
+        </section>
+        <!-- 로딩창 -->
+        <div id="loading-container">
+            <div class="dimm">
+                <div class="loading-cont">
+                    <div class="ring">Loading
+                        <span></span>
+                    </div>
+                    <p>예측 중입니다 잠시만 기다려주세요.</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="loading-container" style="display: none;">
-        <p>예측 중입니다 잠시만 기다려주세요.</p>
-    </div>
-    <script>
-        function predictAndTranslate() {
-            const inputText = document.getElementById('paragraph-input').value;
-            document.getElementById('result-container').style.display = 'none';
-            document.getElementById('loading-container').style.display = 'block';
-
-            fetch('/predict', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ text: inputText })
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('predicted-result').textContent = data['predicted-result'];
-                document.getElementById('loading-container').style.display = 'none';
-                document.getElementById('result-container').style.display = 'block';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('loading-container').style.display = 'none';
-            });
-        }
-    </script>
 </body>
 </html>
