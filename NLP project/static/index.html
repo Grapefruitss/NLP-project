@@ -112,10 +112,15 @@
             </div>
         </section>
         <!-- 결과창 -->
-        <section id="result-container">
-            <h2>예측 결과</h2>
-            <p id="predicted-result"></p>
-        </section>
+        <div id="result-container"> 
+            <div class="dimm">
+                <div class="result-cont">
+                    <h2>예측 결과</h2>
+                    <p id="predicted-result"></p>
+                    <button type="button" class="btn__close" onclick="$(this).parents('#result-container').hide()">확인</button>
+                </div>
+            </div>
+        </div>
         <!-- 로딩창 -->
         <div id="loading-container">
             <div class="dimm">
