@@ -68,7 +68,7 @@ async def predict(request: textRequest):
 def translate(text):
     # 크롬 드라이버 설정
     options = webdriver.ChromeOptions()
-    #options.binary_location = "C:/Program Files/Google/Chrome/Application/chrome.exe"
+    options.binary_location = "C:/Users/user/AppData/Local/Chromium/Application/chrome.exe"
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
