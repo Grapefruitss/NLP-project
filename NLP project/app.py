@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.encoders import jsonable_encoder
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -68,13 +67,11 @@ async def predict(request: textRequest):
 def translate(text):
     # 크롬 드라이버 설정
     options = webdriver.ChromeOptions()
-    #options.binary_location = "C:/Users/user/AppData/Local/Chromium/Application/chrome.exe"
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
 
-    #driver_path = './chromedriver_.exe'
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(service=ChromeDriverManager().install(), options=options)
 
     # 파파고 웹사이트 열기
     papago_url = "https://papago.naver.com/"
