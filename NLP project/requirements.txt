@@ -5,3 +5,4 @@ gensim
 uvicorn
 selenium
 webdriver-manager
+scipy
