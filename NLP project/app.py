@@ -160,7 +160,7 @@ async def translate(text):
     return translated_essay
 
 async def regularize(text):
-    re_text = await text.lower()  # 소문자화                              # 소문자화
+    re_text = text.lower()  # 소문자화                              # 소문자화
     re_text = re.sub(r'\W', ' ', re_text)                # 알파벳, 숫자 제외 한 특수문자 제거
     re_text = re.sub(r'\d', ' ', re_text)                # 숫자 제거
     re_text = re.sub(r'_', ' ', re_text)                 # '_' 제거
