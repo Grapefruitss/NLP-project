@@ -5,7 +5,6 @@ from nltk.tokenize import word_tokenize
 
 #################################################### 데이터 준비 및 전처리
 
-# 데이터 로드
 data = pd.read_csv('cover_letters.csv')  # 자소서 : 'text' // 합격, 불합격 :  'label' (0, 1)
 
 # 텍스트와 라벨 분리
@@ -17,7 +16,7 @@ label_encoder = LabelEncoder()
 encoded_labels = label_encoder.fit_transform(labels)
 
 # 데이터 분할
-X_train, X_test, y_train, y_test = train_test_split(texts, encoded_labels, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(texts, encoded_labels, test_size=0.2, random_state=123)
 
 #################################################### Doc2Vec 모델 학습
 
@@ -28,7 +27,7 @@ tagged_data = [TaggedDocument(words=word_tokenize(doc.lower()), tags=[str(i)]) f
 
 # Doc2Vec 모델 설정 및 학습
 doc2vec_model = Doc2Vec(
-    vector_size=100,  # 벡터 차원 수
+    vector_size=100,
     window=5,         # 컨텍스트 윈도우 크기
     min_count=2,      # 최소 출현 빈도
     workers=4,        # 사용 스레드 수
