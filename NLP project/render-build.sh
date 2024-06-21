@@ -28,14 +28,26 @@ else
 fi
 
 # be sure to add Chrome's location to the PATH as part of your Start Command
-# export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
+export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
 
 # add your own build commands...
 echo "Installing Python dependencies..."
 pip install -r requirements.txt --no-cache-dir -q
 
 echo "Starting application..."
-uvicorn app:app --host 0.0.0.0 --port 8080
+uvicorn app:app --host 0.0.0.0 --port 8080 &
+
+# 포트 확인 및 방화벽 설정 (필요한 경우)
+echo "Checking if port 8080 is open..."
+netstat -tuln | grep 8080
+
+echo "Configuring firewall to allow port 8080..."
+sudo ufw allow 8080
+sudo ufw status
+
+# 애플리케이션 상태 확인
+echo "Checking application status on port 8080..."
+curl http://127.0.0.1:8080
 
 end_time=$(date +%s)
 elapsed_time=$((end_time - start_time))

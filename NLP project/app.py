@@ -83,7 +83,7 @@ async def predict(request: textRequest):
         return {'predicted-result': '미흡'}
     
 
-def translate(text):
+async def translate(text):
     # 크롬 드라이버 설정
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
