@@ -5,4 +5,4 @@ gensim
 uvicorn
 selenium
 webdriver-manager
-scipy
+scipy==1.7.3
