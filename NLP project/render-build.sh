@@ -27,6 +27,7 @@ if [[ ! -d $STORAGE_DIR/chrome ]]; then
   chmod 666 $TEMP_DIR/apt/status
   
   # Clean up the APT cache
+  sudo -i
   rm -rf $TEMP_DIR/apt/archives/partial/*.deb
   
   apt-get update -o Dir::State::lists="$TEMP_DIR/apt/lists" -o Dir::State::status="$TEMP_DIR/apt/status"
