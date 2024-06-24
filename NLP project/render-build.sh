@@ -13,7 +13,7 @@ if [[ ! -d $STORAGE_DIR/chrome ]]; then
   mkdir -p $STORAGE_DIR/chrome
   cd $STORAGE_DIR/chrome
   wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  sudo dpkg -i google-chrome-stable_current_amd64.deb || apt-get install -f -y
+  dpkg -i google-chrome-stable_current_amd64.deb || apt install -f -y
   rm google-chrome-stable_current_amd64.deb
   # Check if the directory exists before changing to it
   if [[ -d "$HOME/project/src" ]]; then
