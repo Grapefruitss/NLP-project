@@ -11,7 +11,7 @@ if [[ ! -d $STORAGE_DIR/chrome ]]; then
   wget -P ./ https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   dpkg -x ./google-chrome-stable_current_amd64.deb $STORAGE_DIR/chrome
   rm ./google-chrome-stable_current_amd64.deb
-  cd $HOME/project # Make sure we return to where we were
+  cd $HOME/project/src # Make sure we return to where we were
 else
   echo "...Using Chrome from cache"
 fi
@@ -22,7 +22,7 @@ export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
 # Check if requirements.txt exists in the expected directory
 if [[ -f $HOME/project/requirements.txt ]]; then
   echo "Installing Python dependencies..."
-  pip install -r $HOME/project/requirements.txt --no-cache-dir -q
+  pip install -r $HOME/project/src/requirements.txt --no-cache-dir -q
 else
   echo "ERROR: Could not find requirements.txt in the expected directory."
   exit 1
