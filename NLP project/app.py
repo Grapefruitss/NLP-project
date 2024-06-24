@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.encoders import jsonable_encoder
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -17,8 +16,30 @@ import time
 import pickle
 import re
 import uvicorn
+import asyncio
+import logging
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
 
-app = FastAPI()
+logger = logging.getLogger("uvicorn.info")
+
+async def startup_event():
+    logger.info("Starting application...")
+
+    # 데이터베이스 연결 설정
+    db_start_time = time.time()
+    await asyncio.sleep(2)  # 예시로 비동기 작업을 대체
+    logger.info(f"Database connection established in {time.time() - db_start_time} seconds")
+
+    # 기타 초기화 작업
+    other_start_time = time.time()
+    await asyncio.sleep(2)  # 예시로 비동기 작업을 대체
+    logger.info(f"Other initialization completed in {time.time() - other_start_time} seconds")
+
+    logger.info("Application startup complete")
+
+app = FastAPI(on_startup=[startup_event])
 
 app.mount("/static", StaticFiles(directory='static'), name='static')
 app.mount("/img", StaticFiles(directory='img'), name="img")
@@ -36,10 +57,10 @@ class textRequest(BaseModel):
 async def predict(request: textRequest):
 
     # 셀레니움을 사용하여 파파고 번역 수행
-    translated_paragraph = translate(request.text)
+    translated_paragraph = await translate(request.text)
 
     # 자소서 정규화
-    regularized_paragraph = regularize(translated_paragraph)
+    regularized_paragraph = await regularize(translated_paragraph)
     
     # 자소서 토큰화
     stop_words = set(stopwords.words('english'))
@@ -65,16 +86,14 @@ async def predict(request: textRequest):
         return {'predicted-result': '미흡'}
     
 
-def translate(text):
+async def translate(text):
     # 크롬 드라이버 설정
     options = webdriver.ChromeOptions()
-    #options.binary_location = "C:/Program Files/Google/Chrome/Application/chrome.exe"
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
 
-    driver_path = r'./chromedriver.exe'
-    driver = webdriver.Chrome(service=Service(driver_path), options=options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
     # 파파고 웹사이트 열기
     papago_url = "https://papago.naver.com/"
@@ -140,8 +159,8 @@ def translate(text):
 
     return translated_essay
 
-def regularize(text):
-    re_text = text.lower()                               # 소문자화
+async def regularize(text):
+    re_text = text.lower()  # 소문자화                              # 소문자화
     re_text = re.sub(r'\W', ' ', re_text)                # 알파벳, 숫자 제외 한 특수문자 제거
     re_text = re.sub(r'\d', ' ', re_text)                # 숫자 제거
     re_text = re.sub(r'_', ' ', re_text)                 # '_' 제거
@@ -152,4 +171,4 @@ def regularize(text):
     return re_text
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='127.0.0.1', port=8000)
+    uvicorn.run(app, host='0.0.0.0', port=8080, log_level="info")
