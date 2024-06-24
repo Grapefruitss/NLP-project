@@ -17,7 +17,7 @@ else
 fi
 
 # be sure to add Chrome's location to the PATH as part of your Start Command
-export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
+#export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
 
 echo "Installing Python dependencies..."
 pip install -r requirements.txt --no-cache-dir -q
