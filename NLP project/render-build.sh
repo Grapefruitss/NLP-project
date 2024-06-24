@@ -7,6 +7,7 @@ start_time=$(date +%s)
 echo "Starting directory: $(pwd)"
 
 STORAGE_DIR=/opt/render/project/.render
+TEMP_DIR=/tmp/apt-lists
 
 if [[ ! -d $STORAGE_DIR/chrome ]]; then
   echo "...Downloading Chrome"
@@ -15,13 +16,12 @@ if [[ ! -d $STORAGE_DIR/chrome ]]; then
   wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   
   # Set the TMPDIR environment variable
-  export TMPDIR=/tmp
+  export TMPDIR=$TEMP_DIR
   
   # Create the necessary directories with write permissions
-  mkdir -p /var/lib/apt/lists/partial
-  chmod -R 777 /var/lib/apt/lists
+  mkdir -p $TEMP_DIR/apt-lists/partial
   
-  apt-get update
+  apt-get update -o Dir::State::lists="$TEMP_DIR/apt-lists" -o Dir::State::status="$TEMP_DIR/apt/status"
   apt-get install -y --no-install-recommends libgtk2.0-dev libgtk-3-dev libgbm-dev libx11-xcb-dev libxcomposite-dev \
                      libxcursor-dev libxdamage-dev libxi-dev libxrandr-dev libxss-dev libxtst-dev \
                      libatk1.0-dev libatk-bridge2.0-dev libpangocairo-1.0-0 libcups2-dev libfontconfig1-dev \
