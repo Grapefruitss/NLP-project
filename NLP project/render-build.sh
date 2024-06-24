@@ -20,7 +20,7 @@ fi
 export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
 
 # Check if requirements.txt exists in the expected directory
-if [[ -f $HOME/project/requirements.txt ]]; then
+if [[ -f $HOME/project/src/requirements.txt ]]; then
   echo "Installing Python dependencies..."
   pip install -r $HOME/project/src/requirements.txt --no-cache-dir -q
 else
