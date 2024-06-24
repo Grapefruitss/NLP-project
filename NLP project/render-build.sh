@@ -15,7 +15,7 @@ if [[ ! -d $STORAGE_DIR/chrome ]]; then
   wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   
   # Create a temporary directory for APT cache
-  APT_CACHE_DIR=$(mktemp -d)
+  APT_CACHE_DIR=$(mktemp -d -t apt-cache-XXXXXXXXXX)
   export APT_CONFIG="-o Dir::Cache=$APT_CACHE_DIR -o Dir::State::lists=$APT_CACHE_DIR/lists"
   
   apt-get $APT_CONFIG update
