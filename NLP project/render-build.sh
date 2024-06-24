@@ -18,8 +18,8 @@ if [[ ! -d $STORAGE_DIR/chrome ]]; then
   export TMPDIR=/tmp
   
   # Create the necessary directories with write permissions
-  sudo mkdir -p /var/lib/apt/lists/partial
-  sudo chmod -R 777 /var/lib/apt/lists
+  mkdir -p /var/lib/apt/lists/partial
+  chmod -R 777 /var/lib/apt/lists
   
   apt-get update
   apt-get install -y --no-install-recommends libgtk2.0-dev libgtk-3-dev libgbm-dev libx11-xcb-dev libxcomposite-dev \
