@@ -19,9 +19,9 @@ if [[ ! -d $STORAGE_DIR/chrome ]]; then
   export TMPDIR=$TEMP_DIR
   
   # Create the necessary directories with write permissions
-  mkdir -p $TEMP_DIR/apt-lists/partial
+  mkdir -p $TEMP_DIR/apt/lists/partial
   
-  apt-get update -o Dir::State::lists="$TEMP_DIR/apt-lists" -o Dir::State::status="$TEMP_DIR/apt/status"
+  apt-get update -o Dir::State::lists="$TEMP_DIR/apt/lists" -o Dir::State::status="$TEMP_DIR/apt/status"
   apt-get install -y --no-install-recommends libgtk2.0-dev libgtk-3-dev libgbm-dev libx11-xcb-dev libxcomposite-dev \
                      libxcursor-dev libxdamage-dev libxi-dev libxrandr-dev libxss-dev libxtst-dev \
                      libatk1.0-dev libatk-bridge2.0-dev libpangocairo-1.0-0 libcups2-dev libfontconfig1-dev \
