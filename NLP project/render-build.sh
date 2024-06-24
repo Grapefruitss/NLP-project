@@ -13,7 +13,7 @@ if [[ ! -d $STORAGE_DIR/chrome ]]; then
   mkdir -p $STORAGE_DIR/chrome
   cd $STORAGE_DIR/chrome
   wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  dpkg -i google-chrome-stable_current_amd64.deb || apt install -f -y
+  sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get install -f -y
   rm google-chrome-stable_current_amd64.deb
   # Check if the directory exists before changing to it
   if [[ -d "$HOME/project/src" ]]; then
@@ -32,7 +32,7 @@ export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
 
 # add your own build commands...
 echo "Installing Python dependencies..."
-pip install -r requirements.txt --no-cache-dir -q
+sudo pip install -r requirements.txt --no-cache-dir -q
 
 echo "Starting application..."
 uvicorn app:app --host 0.0.0.0 --port 8080 &
