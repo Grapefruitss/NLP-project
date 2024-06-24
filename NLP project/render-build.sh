@@ -13,12 +13,18 @@ if [[ ! -d $STORAGE_DIR/chrome ]]; then
   mkdir -p $STORAGE_DIR/chrome
   cd $STORAGE_DIR/chrome
   wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  apt-get update
-  apt-get install -y --no-install-recommends libgtk2.0-dev libgtk-3-dev libgbm-dev libx11-xcb-dev libxcomposite-dev \
+  
+  # Create a temporary directory for APT cache
+  APT_CACHE_DIR=$(mktemp -d)
+  export APT_CONFIG="-o Dir::Cache=$APT_CACHE_DIR -o Dir::State::lists=$APT_CACHE_DIR/lists"
+  
+  apt-get $APT_CONFIG update
+  apt-get $APT_CONFIG install -y --no-install-recommends libgtk2.0-dev libgtk-3-dev libgbm-dev libx11-xcb-dev libxcomposite-dev \
                      libxcursor-dev libxdamage-dev libxi-dev libxrandr-dev libxss-dev libxtst-dev \
                      libatk1.0-dev libatk-bridge2.0-dev libpangocairo-1.0-0 libcups2-dev libfontconfig1-dev \
                      libdbus-1-dev libexpat1-dev
   dpkg -i google-chrome-stable_current_amd64.deb
+  rm -rf $APT_CACHE_DIR
   rm google-chrome-stable_current_amd64.deb
   # Check if the directory exists before changing to it
   if [[ -d "$HOME/project/src" ]]; then
