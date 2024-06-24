@@ -19,9 +19,14 @@ fi
 # be sure to add Chrome's location to the PATH as part of your Start Command
 export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
 
-# add your own build commands...
-echo "Installing Python dependencies..."
-pip install -r requirements.txt --no-cache-dir -q
+# Check if requirements.txt exists in the current directory
+if [[ -f requirements.txt ]]; then
+  echo "Installing Python dependencies..."
+  pip install -r requirements.txt --no-cache-dir -q
+else
+  echo "ERROR: Could not find requirements.txt in the current directory."
+  exit 1
+fi
 
 echo "Starting application..."
 uvicorn app:app --host 0.0.0.0 --port 8080 &
