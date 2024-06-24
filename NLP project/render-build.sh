@@ -7,7 +7,7 @@ start_time=$(date +%s)
 echo "Starting directory: $(pwd)"
 
 STORAGE_DIR=/opt/render/project/.render
-TEMP_DIR=/tmp/apt-lists
+TEMP_DIR=/tmp/apt
 
 if [[ ! -d $STORAGE_DIR/chrome ]]; then
   echo "...Downloading Chrome"
