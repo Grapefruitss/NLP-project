@@ -20,6 +20,7 @@ if [[ ! -d $STORAGE_DIR/chrome ]]; then
   
   # Create the necessary directories with write permissions
   mkdir -p $TEMP_DIR/apt/lists/partial
+  chmod -R 777 $TEMP_DIR/apt
   
   apt-get update -o Dir::State::lists="$TEMP_DIR/apt/lists" -o Dir::State::status="$TEMP_DIR/apt/status"
   apt-get install -y --no-install-recommends libgtk2.0-dev libgtk-3-dev libgbm-dev libx11-xcb-dev libxcomposite-dev \
