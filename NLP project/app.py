@@ -67,10 +67,10 @@ async def predict(request: textRequest):
     new_tokens = word_tokenize(regularized_paragraph)
     filtered_tokens = [word for word in new_tokens if word.isalpha() and word not in stop_words]
 
-    with open('./models/d2v_model_lgbm.pkl', 'rb') as f:
+    with open('./models/d2v_model.pkl', 'rb') as f:
         d2vmodel = pickle.load(f)
 
-    with open('./models/clf_model_lgbm.pkl', 'rb') as f:
+    with open('./models/clf_model.pkl', 'rb') as f:
         clfmodel = pickle.load(f)
 
     # 새 자소서의 벡터 표현 생성
